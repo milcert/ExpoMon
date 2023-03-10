@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ExpoMonClass</class>
+ <widget class="QMainWindow" name="ExpoMonClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>997</width>
+    <height>804</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ExpoMon</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="ExpoMon.qrc">
+    <normaloff>:/ExpoMon/Resources/icon.png</normaloff>:/ExpoMon/Resources/icon.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="tab">
+         <attribute name="title">
+          <string>Main</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_9" stretch="1,8,3">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1,1,6">
+              <property name="spacing">
+               <number>7</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>10</number>
+              </property>
+              <property name="bottomMargin">
+               <number>20</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="BtnStartStop">
+                <property name="text">
+                 <string>Monitor Exports</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="BtnDisEnableMonitor">
+                <property name="text">
+                 <string>Disable Monitoring</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="BtnReset">
+                <property name="text">
+                 <string>Reset</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QTabWidget" name="tabWidget_2">
+              <property name="styleSheet">
+               <string notr="true">QTabWidget::pane {
+    /*border: 1px solid black;*/
+}</string>
+              </property>
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <widget class="QWidget" name="tab_3">
+               <attribute name="title">
+                <string>Exports accessed</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_12">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_11">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0">
+                    <property name="spacing">
+                     <number>6</number>
+                    </property>
+                    <item>
+                     <widget class="QLineEdit" name="EditAccessFilter"/>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="BtnAccessFilter">
+                      <property name="text">
+                       <string>Filter</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <widget class="QTreeWidget" name="TreeExpAccessed">
+                    <property name="contextMenuPolicy">
+                     <enum>Qt::CustomContextMenu</enum>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QTreeWidget:item{margin-right: 40px}</string>
+                    </property>
+                    <property name="sortingEnabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="columnCount">
+                     <number>6</number>
+                    </property>
+                    <attribute name="headerDefaultSectionSize">
+                     <number>140</number>
+                    </attribute>
+                    <column>
+                     <property name="text">
+                      <string notr="true">1</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string notr="true">2</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string notr="true">3</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string notr="true">4</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string notr="true">5</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string notr="true">6</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_4">
+               <attribute name="title">
+                <string>Hijacked exports called</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_14">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_13">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_4">
+                    <item>
+                     <widget class="QLineEdit" name="EditHijackFilter"/>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="BtnHijackFilter">
+                      <property name="text">
+                       <string>Filter</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <widget class="QTreeWidget" name="TreeExpHijacked">
+                    <property name="styleSheet">
+                     <string notr="true">QTreeWidget:item{margin-right: 40px}</string>
+                    </property>
+                    <property name="sortingEnabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="columnCount">
+                     <number>6</number>
+                    </property>
+                    <attribute name="headerShowSortIndicator" stdset="0">
+                     <bool>true</bool>
+                    </attribute>
+                    <column>
+                     <property name="text">
+                      <string notr="true">1</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string notr="true">2</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string notr="true">3</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string notr="true">4</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string notr="true">5</string>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string notr="true">6</string>
+                     </property>
+                    </column>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title">
+               <string>Log</string>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <item>
+                  <widget class="QListWidget" name="LstLog">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="contextMenuPolicy">
+                    <enum>Qt::CustomContextMenu</enum>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Sunken</enum>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_2">
+         <attribute name="title">
+          <string>Settings</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="0">
+             <widget class="QFrame" name="frame_2">
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <widget class="QCheckBox" name="CbMonitorCond">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>25</y>
+                 <width>336</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Monitor exports access only from the following modules</string>
+               </property>
+              </widget>
+              <widget class="QCheckBox" name="CbHijack">
+               <property name="geometry">
+                <rect>
+                 <x>485</x>
+                 <y>25</y>
+                 <width>211</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Hijack exports on condition</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+              <widget class="QCheckBox" name="CbBreak">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>145</y>
+                 <width>251</width>
+                 <height>31</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Break on exports access condition</string>
+               </property>
+              </widget>
+              <widget class="QGroupBox" name="groupBox_2">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>45</y>
+                 <width>431</width>
+                 <height>86</height>
+                </rect>
+               </property>
+               <property name="title">
+                <string/>
+               </property>
+               <widget class="QPlainTextEdit" name="EditMonitorModules">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>10</y>
+                  <width>411</width>
+                  <height>66</height>
+                 </rect>
+                </property>
+               </widget>
+              </widget>
+              <widget class="QGroupBox" name="groupBox_3">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>170</y>
+                 <width>431</width>
+                 <height>286</height>
+                </rect>
+               </property>
+               <property name="title">
+                <string/>
+               </property>
+               <widget class="QPlainTextEdit" name="EditBreak">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>10</y>
+                  <width>411</width>
+                  <height>56</height>
+                 </rect>
+                </property>
+                <property name="lineWrapMode">
+                 <enum>QPlainTextEdit::NoWrap</enum>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>75</y>
+                  <width>121</width>
+                  <height>21</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Module Name</string>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_2">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>165</y>
+                  <width>116</width>
+                  <height>21</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Function Name</string>
+                </property>
+               </widget>
+               <widget class="QPlainTextEdit" name="EditBreakOnModule">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>95</y>
+                  <width>411</width>
+                  <height>61</height>
+                 </rect>
+                </property>
+               </widget>
+               <widget class="QPlainTextEdit" name="EditBreakOnFunction">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>185</y>
+                  <width>411</width>
+                  <height>91</height>
+                 </rect>
+                </property>
+               </widget>
+              </widget>
+              <widget class="QGroupBox" name="groupBox_4">
+               <property name="geometry">
+                <rect>
+                 <x>485</x>
+                 <y>45</y>
+                 <width>431</width>
+                 <height>296</height>
+                </rect>
+               </property>
+               <property name="title">
+                <string/>
+               </property>
+               <widget class="QPlainTextEdit" name="EditHijack">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>10</y>
+                  <width>411</width>
+                  <height>66</height>
+                 </rect>
+                </property>
+                <property name="lineWrapMode">
+                 <enum>QPlainTextEdit::NoWrap</enum>
+                </property>
+                <property name="plainText">
+                 <string>mod.party(cip)==0</string>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_3">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>85</y>
+                  <width>121</width>
+                  <height>21</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Module Name</string>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_4">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>175</y>
+                  <width>116</width>
+                  <height>21</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Function Name</string>
+                </property>
+               </widget>
+               <widget class="QPlainTextEdit" name="EditHijackOnModule">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>105</y>
+                  <width>411</width>
+                  <height>61</height>
+                 </rect>
+                </property>
+               </widget>
+               <widget class="QPlainTextEdit" name="EditHijackOnFunction">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>195</y>
+                  <width>411</width>
+                  <height>91</height>
+                 </rect>
+                </property>
+               </widget>
+              </widget>
+              <widget class="QCheckBox" name="CbBreakHijack">
+               <property name="geometry">
+                <rect>
+                 <x>485</x>
+                 <y>365</y>
+                 <width>211</width>
+                 <height>21</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Break on hijacked exports on condition</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+              <widget class="QGroupBox" name="groupBox_5">
+               <property name="geometry">
+                <rect>
+                 <x>485</x>
+                 <y>385</y>
+                 <width>431</width>
+                 <height>296</height>
+                </rect>
+               </property>
+               <property name="title">
+                <string/>
+               </property>
+               <widget class="QPlainTextEdit" name="EditBreakHijack">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>10</y>
+                  <width>411</width>
+                  <height>66</height>
+                 </rect>
+                </property>
+                <property name="lineWrapMode">
+                 <enum>QPlainTextEdit::NoWrap</enum>
+                </property>
+                <property name="plainText">
+                 <string/>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_5">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>85</y>
+                  <width>121</width>
+                  <height>21</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Module Name</string>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_6">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>175</y>
+                  <width>116</width>
+                  <height>21</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Function Name</string>
+                </property>
+               </widget>
+               <widget class="QPlainTextEdit" name="EditBreakHijackOnModule">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>105</y>
+                  <width>411</width>
+                  <height>61</height>
+                 </rect>
+                </property>
+               </widget>
+               <widget class="QPlainTextEdit" name="EditBreakHijackOnFunction">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>195</y>
+                  <width>411</width>
+                  <height>91</height>
+                 </rect>
+                </property>
+               </widget>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="ExpoMon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

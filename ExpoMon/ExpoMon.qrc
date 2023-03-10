@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/ExpoMon">
+        <file>Resources/splash.png</file>
+        <file>Resources/icon.png</file>
+    </qresource>
+</RCC>

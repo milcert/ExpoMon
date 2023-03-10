@@ -1,0 +1,9 @@
+Debug/
+Release/
+GeneratedFiles/
+*.vcxproj.user
+*.pdb
+*.aps
+*.suo
+*.*sdf
+*.user
