@@ -34,32 +34,32 @@
 
 BOOL WINAPI DllMain(HINSTANCE DllBase, DWORD CallReason, LPVOID Reserved)
 {
-	switch (CallReason)
-	{
-		case DLL_PROCESS_ATTACH:
-		{
-			/* init */
-			ExpoMon::ModuleHandle = DllBase;
-			break;
-		}
-		case DLL_THREAD_ATTACH:
-		{
-			/* thread-specific initialization */
-			break;
-		}
-		case DLL_THREAD_DETACH:
-		{
-			/* thread-specific cleanup */
-			break;
-		}
-		case DLL_PROCESS_DETACH:
-		{
-			/* cleanup */
-			break;
-		}
-		default:
-			break;
-	}
+    switch (CallReason)
+    {
+        case DLL_PROCESS_ATTACH:
+        {
+            /* init */
+            ExpoMon::ModuleHandle = DllBase;
+            break;
+        }
+        case DLL_THREAD_ATTACH:
+        {
+            /* thread-specific initialization */
+            break;
+        }
+        case DLL_THREAD_DETACH:
+        {
+            /* thread-specific cleanup */
+            break;
+        }
+        case DLL_PROCESS_DETACH:
+        {
+            /* cleanup */
+            break;
+        }
+        default:
+            break;
+    }
 
-	return TRUE;
+    return TRUE;
 }

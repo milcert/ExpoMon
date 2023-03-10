@@ -68,34 +68,34 @@
 
 namespace Utils 
 {
-	template<typename ... Args>
-	std::string StringFormat(const std::string& fmt, Args ... args)
-	{
-		/* get the resulting size */
-		size_t size = _snprintf(nullptr, 0, fmt.c_str(), args ...) + 1;
+    template<typename ... Args>
+    std::string StringFormat(const std::string& fmt, Args ... args)
+    {
+        /* get the resulting size */
+        size_t size = _snprintf(nullptr, 0, fmt.c_str(), args ...) + 1;
 
-		/* allocate the buffer with the calculated size */
-		std::unique_ptr<char[]> buf(new char[size]);
+        /* allocate the buffer with the calculated size */
+        std::unique_ptr<char[]> buf(new char[size]);
 
-		_snprintf(buf.get(), size, fmt.c_str(), args ...);
+        _snprintf(buf.get(), size, fmt.c_str(), args ...);
 
-		/* remove trailing null-terminator */
-		return std::string(buf.get(), buf.get() + size - 1);
-	}
+        /* remove trailing null-terminator */
+        return std::string(buf.get(), buf.get() + size - 1);
+    }
 
-	template <class T>
-	inline T AlignUp(T val, T alignment)
-	{
-		val += alignment - 1;
+    template <class T>
+    inline T AlignUp(T val, T alignment)
+    {
+        val += alignment - 1;
 
-		return val - val % alignment;
-	}
+        return val - val % alignment;
+    }
 
-	template <class T>
-	inline T AlignDown(T val, T alignment)
-	{
-		return val - val % alignment;
-	}
+    template <class T>
+    inline T AlignDown(T val, T alignment)
+    {
+        return val - val % alignment;
+    }
 }
 
 #endif // _UTILS_H_

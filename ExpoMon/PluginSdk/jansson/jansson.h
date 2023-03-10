@@ -30,28 +30,28 @@ extern "C" {
 /* Version as a 3-byte hex number, e.g. 0x010201 == 1.2.1. Use this
    for numeric comparisons, e.g. #if JANSSON_VERSION_HEX >= ... */
 #define JANSSON_VERSION_HEX  ((JANSSON_MAJOR_VERSION << 16) |   \
-                              (JANSSON_MINOR_VERSION << 8)  |   \
-                              (JANSSON_MICRO_VERSION << 0))
+							  (JANSSON_MINOR_VERSION << 8)  |   \
+							  (JANSSON_MICRO_VERSION << 0))
 
 
 /* types */
 
 typedef enum
 {
-    JSON_OBJECT,
-    JSON_ARRAY,
-    JSON_STRING,
-    JSON_INTEGER,
-    JSON_REAL,
-    JSON_TRUE,
-    JSON_FALSE,
-    JSON_NULL
+	JSON_OBJECT,
+	JSON_ARRAY,
+	JSON_STRING,
+	JSON_INTEGER,
+	JSON_REAL,
+	JSON_TRUE,
+	JSON_FALSE,
+	JSON_NULL
 } json_type;
 
 typedef struct json_t
 {
-    json_type type;
-    size_t refcount;
+	json_type type;
+	size_t refcount;
 } json_t;
 
 #ifndef JANSSON_USING_CMAKE /* disabled if using cmake */
@@ -99,9 +99,9 @@ __declspec(dllimport) json_t* json_null(void);
 static JSON_INLINE
 json_t* json_incref(json_t* json)
 {
-    if(json && json->refcount != (size_t) - 1)
-        ++json->refcount;
-    return json;
+	if(json && json->refcount != (size_t) - 1)
+		++json->refcount;
+	return json;
 }
 
 /* do not call json_delete directly */
@@ -110,19 +110,19 @@ __declspec(dllimport) void json_delete(json_t* json);
 static JSON_INLINE
 void json_decref(json_t* json)
 {
-    if(json && json->refcount != (size_t) - 1 && --json->refcount == 0)
-        json_delete(json);
+	if(json && json->refcount != (size_t) - 1 && --json->refcount == 0)
+		json_delete(json);
 }
 
 #if defined(__GNUC__) || defined(__clang__)
 static JSON_INLINE
 void json_decrefp(json_t** json)
 {
-    if(json)
-    {
-        json_decref(*json);
-        *json = NULL;
-    }
+	if(json)
+	{
+		json_decref(*json);
+		*json = NULL;
+	}
 }
 
 #define json_auto_t json_t __attribute__((cleanup(json_decrefp)))
@@ -136,11 +136,11 @@ void json_decrefp(json_t** json)
 
 typedef struct
 {
-    int line;
-    int column;
-    int position;
-    char source[JSON_ERROR_SOURCE_LENGTH];
-    char text[JSON_ERROR_TEXT_LENGTH];
+	int line;
+	int column;
+	int position;
+	char source[JSON_ERROR_SOURCE_LENGTH];
+	char text[JSON_ERROR_TEXT_LENGTH];
 } json_error_t;
 
 
@@ -165,38 +165,38 @@ __declspec(dllimport) json_t* json_object_iter_value(void* iter);
 __declspec(dllimport) int json_object_iter_set_new(json_t* object, void* iter, json_t* value);
 
 #define json_object_foreach(object, key, value) \
-    for(key = json_object_iter_key(json_object_iter(object)); \
-        key && (value = json_object_iter_value(json_object_key_to_iter(key))); \
-        key = json_object_iter_key(json_object_iter_next(object, json_object_key_to_iter(key))))
+	for(key = json_object_iter_key(json_object_iter(object)); \
+		key && (value = json_object_iter_value(json_object_key_to_iter(key))); \
+		key = json_object_iter_key(json_object_iter_next(object, json_object_key_to_iter(key))))
 
 #define json_object_foreach_safe(object, n, key, value)     \
-    for(key = json_object_iter_key(json_object_iter(object)), \
-            n = json_object_iter_next(object, json_object_key_to_iter(key)); \
-        key && (value = json_object_iter_value(json_object_key_to_iter(key))); \
-        key = json_object_iter_key(n), \
-            n = json_object_iter_next(object, json_object_key_to_iter(key)))
+	for(key = json_object_iter_key(json_object_iter(object)), \
+			n = json_object_iter_next(object, json_object_key_to_iter(key)); \
+		key && (value = json_object_iter_value(json_object_key_to_iter(key))); \
+		key = json_object_iter_key(n), \
+			n = json_object_iter_next(object, json_object_key_to_iter(key)))
 
 #define json_array_foreach(array, index, value) \
-    for(index = 0; \
-        index < json_array_size(array) && (value = json_array_get(array, index)); \
-        index++)
+	for(index = 0; \
+		index < json_array_size(array) && (value = json_array_get(array, index)); \
+		index++)
 
 static JSON_INLINE
 int json_object_set(json_t* object, const char* key, json_t* value)
 {
-    return json_object_set_new(object, key, json_incref(value));
+	return json_object_set_new(object, key, json_incref(value));
 }
 
 static JSON_INLINE
 int json_object_set_nocheck(json_t* object, const char* key, json_t* value)
 {
-    return json_object_set_new_nocheck(object, key, json_incref(value));
+	return json_object_set_new_nocheck(object, key, json_incref(value));
 }
 
 static JSON_INLINE
 int json_object_iter_set(json_t* object, void* iter, json_t* value)
 {
-    return json_object_iter_set_new(object, iter, json_incref(value));
+	return json_object_iter_set_new(object, iter, json_incref(value));
 }
 
 __declspec(dllimport) size_t json_array_size(const json_t* array);
@@ -211,19 +211,19 @@ __declspec(dllimport) int json_array_extend(json_t* array, json_t* other);
 static JSON_INLINE
 int json_array_set(json_t* array, size_t ind, json_t* value)
 {
-    return json_array_set_new(array, ind, json_incref(value));
+	return json_array_set_new(array, ind, json_incref(value));
 }
 
 static JSON_INLINE
 int json_array_append(json_t* array, json_t* value)
 {
-    return json_array_append_new(array, json_incref(value));
+	return json_array_append_new(array, json_incref(value));
 }
 
 static JSON_INLINE
 int json_array_insert(json_t* array, size_t ind, json_t* value)
 {
-    return json_array_insert_new(array, ind, json_incref(value));
+	return json_array_insert_new(array, ind, json_incref(value));
 }
 
 __declspec(dllimport) const char* json_string_value(const json_t* string);

@@ -34,16 +34,16 @@
 
 QtExpoMonAbout::QtExpoMonAbout(QWidget *parent) : QWidget(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 
-	this->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::Popup | Qt::FramelessWindowHint);
 
-	QString s = QString("%1 (%2) %3")
-		.arg(ExpoMon_PLUGIN_NAME_LONG)
-		.arg(ExpoMon_PLUGIN_NAME_SHORT)
-		.arg(ExpoMon_VERSION_STR);
+    QString s = QString("%1 (%2) %3")
+        .arg(ExpoMon_PLUGIN_NAME_LONG)
+        .arg(ExpoMon_PLUGIN_NAME_SHORT)
+        .arg(ExpoMon_VERSION_STR);
 
-	ui.LblVersion->setText(s);
+    ui.LblVersion->setText(s);
 }
 
 QtExpoMonAbout::~QtExpoMonAbout()
@@ -53,22 +53,22 @@ QtExpoMonAbout::~QtExpoMonAbout()
 
 void QtExpoMonAbout::focusOutEvent(QFocusEvent *event)
 {
-	/* Stop the soundtrack */
-	PlaySoundA(NULL, NULL, SND_ASYNC);
+    /* Stop the soundtrack */
+    PlaySoundA(NULL, NULL, SND_ASYNC);
 
-	QWidget::focusOutEvent(event);
+    QWidget::focusOutEvent(event);
 }
 
 void QtExpoMonAbout::closeEvent(QCloseEvent *event)
 {
-	/* Stop the soundtrack */
-	PlaySoundA(NULL, NULL, SND_ASYNC);
+    /* Stop the soundtrack */
+    PlaySoundA(NULL, NULL, SND_ASYNC);
 
-	/* Call the parent's function */
-	QWidget::closeEvent(event);
+    /* Call the parent's function */
+    QWidget::closeEvent(event);
 }
 
 void QtExpoMonAbout::PlaySoundtrack()
 {
-	PlaySoundA(MAKEINTRESOURCEA(IDR_WAVE1), ExpoMon::ModuleHandle, SND_RESOURCE | SND_ASYNC | SND_LOOP);
+    PlaySoundA(MAKEINTRESOURCEA(IDR_WAVE1), ExpoMon::ModuleHandle, SND_RESOURCE | SND_ASYNC | SND_LOOP);
 }

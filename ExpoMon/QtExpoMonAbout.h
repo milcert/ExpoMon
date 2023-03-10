@@ -37,8 +37,8 @@
 
 #if 0
 
-	#include <QMediaPlayer>
-	#include <QSound>
+    #include <QMediaPlayer>
+    #include <QSound>
 
 #endif
 
@@ -52,21 +52,21 @@
 
 class QtExpoMonAbout : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	QtExpoMonAbout(QWidget *parent = Q_NULLPTR);
-	~QtExpoMonAbout();
+    QtExpoMonAbout(QWidget *parent = Q_NULLPTR);
+    ~QtExpoMonAbout();
 
 public:
-	void PlaySoundtrack();
+    void PlaySoundtrack();
 
 protected:
-	void focusOutEvent(QFocusEvent *event);
-	void closeEvent(QCloseEvent *event);
+    void focusOutEvent(QFocusEvent *event);
+    void closeEvent(QCloseEvent *event);
 
 private:
-	Ui::ExpoMonAbout ui;
+    Ui::ExpoMonAbout ui;
 };
 
 /***************************************************************************/

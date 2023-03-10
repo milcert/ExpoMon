@@ -8,9 +8,9 @@
    modification, are permitted provided that the following conditions are
    met:
 
-       * Redistributions of source code must retain the above copyright
+	   * Redistributions of source code must retain the above copyright
    notice, this list of conditions and the following disclaimer.
-       * Redistributions in binary form must reproduce the above
+	   * Redistributions in binary form must reproduce the above
    copyright notice, this list of conditions and the following disclaimer
    in the documentation and/or other materials provided with the
    distribution.
@@ -43,35 +43,35 @@ extern "C"
 __declspec(dllimport) int LZ4_compressHC(const char* source, char* dest, int inputSize);
 /*
 LZ4_compressHC :
-    return : the number of bytes in compressed buffer dest
-             or 0 if compression fails.
-    note : destination buffer must be already allocated.
-        To avoid any problem, size it to handle worst cases situations (input data not compressible)
-        Worst case size evaluation is provided by function LZ4_compressBound() (see "lz4.h")
+	return : the number of bytes in compressed buffer dest
+			 or 0 if compression fails.
+	note : destination buffer must be already allocated.
+		To avoid any problem, size it to handle worst cases situations (input data not compressible)
+		Worst case size evaluation is provided by function LZ4_compressBound() (see "lz4.h")
 */
 
 __declspec(dllimport) int LZ4_compressHC_limitedOutput(const char* source, char* dest, int inputSize, int maxOutputSize);
 /*
 LZ4_compress_limitedOutput() :
-    Compress 'inputSize' bytes from 'source' into an output buffer 'dest' of maximum size 'maxOutputSize'.
-    If it cannot achieve it, compression will stop, and result of the function will be zero.
-    This function never writes outside of provided output buffer.
+	Compress 'inputSize' bytes from 'source' into an output buffer 'dest' of maximum size 'maxOutputSize'.
+	If it cannot achieve it, compression will stop, and result of the function will be zero.
+	This function never writes outside of provided output buffer.
 
-    inputSize  : Max supported value is 1 GB
-    maxOutputSize : is maximum allowed size into the destination buffer (which must be already allocated)
-    return : the number of output bytes written in buffer 'dest'
-             or 0 if compression fails.
+	inputSize  : Max supported value is 1 GB
+	maxOutputSize : is maximum allowed size into the destination buffer (which must be already allocated)
+	return : the number of output bytes written in buffer 'dest'
+			 or 0 if compression fails.
 */
 
 
 __declspec(dllimport) int LZ4_compressHC2(const char* source, char* dest, int inputSize, int compressionLevel);
 __declspec(dllimport) int LZ4_compressHC2_limitedOutput(const char* source, char* dest, int inputSize, int maxOutputSize, int compressionLevel);
 /*
-    Same functions as above, but with programmable 'compressionLevel'.
-    Recommended values are between 4 and 9, although any value between 0 and 16 will work.
-    'compressionLevel'==0 means use default 'compressionLevel' value.
-    Values above 16 behave the same as 16.
-    Equivalent variants exist for all other compression functions below.
+	Same functions as above, but with programmable 'compressionLevel'.
+	Recommended values are between 4 and 9, although any value between 0 and 16 will work.
+	'compressionLevel'==0 means use default 'compressionLevel' value.
+	Values above 16 behave the same as 16.
+	Equivalent variants exist for all other compression functions below.
 */
 
 /* Note :

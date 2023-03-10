@@ -8,9 +8,9 @@
    modification, are permitted provided that the following conditions are
    met:
 
-       * Redistributions of source code must retain the above copyright
+	   * Redistributions of source code must retain the above copyright
    notice, this list of conditions and the following disclaimer.
-       * Redistributions in binary form must reproduce the above
+	   * Redistributions in binary form must reproduce the above
    copyright notice, this list of conditions and the following disclaimer
    in the documentation and/or other materials provided with the
    distribution.
@@ -65,19 +65,19 @@ __declspec(dllimport) int LZ4_decompress_safe(const char* source, char* dest, in
 
 /*
 LZ4_compress() :
-    Compresses 'inputSize' bytes from 'source' into 'dest'.
-    Destination buffer must be already allocated,
-    and must be sized to handle worst cases situations (input data not compressible)
-    Worst case size evaluation is provided by function LZ4_compressBound()
-    inputSize : Max supported value is LZ4_MAX_INPUT_VALUE
-    return : the number of bytes written in buffer dest
-             or 0 if the compression fails
+	Compresses 'inputSize' bytes from 'source' into 'dest'.
+	Destination buffer must be already allocated,
+	and must be sized to handle worst cases situations (input data not compressible)
+	Worst case size evaluation is provided by function LZ4_compressBound()
+	inputSize : Max supported value is LZ4_MAX_INPUT_VALUE
+	return : the number of bytes written in buffer dest
+			 or 0 if the compression fails
 
 LZ4_decompress_safe() :
-    maxOutputSize : is the size of the destination buffer (which must be already allocated)
-    return : the number of bytes decoded in the destination buffer (necessarily <= maxOutputSize)
-             If the source stream is detected malformed, the function will stop decoding and return a negative result.
-             This function is protected against buffer overflow exploits (never writes outside of output buffer, and never reads outside of input buffer). Therefore, it is protected against malicious data packets
+	maxOutputSize : is the size of the destination buffer (which must be already allocated)
+	return : the number of bytes decoded in the destination buffer (necessarily <= maxOutputSize)
+			 If the source stream is detected malformed, the function will stop decoding and return a negative result.
+			 This function is protected against buffer overflow exploits (never writes outside of output buffer, and never reads outside of input buffer). Therefore, it is protected against malicious data packets
 */
 
 
@@ -89,56 +89,56 @@ LZ4_decompress_safe() :
 
 /*
 LZ4_compressBound() :
-    Provides the maximum size that LZ4 may output in a "worst case" scenario (input data not compressible)
-    primarily useful for memory allocation of output buffer.
-    inline function is recommended for the general case,
-    macro is also provided when result needs to be evaluated at compilation (such as stack memory allocation).
+	Provides the maximum size that LZ4 may output in a "worst case" scenario (input data not compressible)
+	primarily useful for memory allocation of output buffer.
+	inline function is recommended for the general case,
+	macro is also provided when result needs to be evaluated at compilation (such as stack memory allocation).
 
-    isize  : is the input size. Max supported value is LZ4_MAX_INPUT_SIZE
-    return : maximum output size in a "worst case" scenario
-             or 0, if input size is too large ( > LZ4_MAX_INPUT_SIZE)
+	isize  : is the input size. Max supported value is LZ4_MAX_INPUT_SIZE
+	return : maximum output size in a "worst case" scenario
+			 or 0, if input size is too large ( > LZ4_MAX_INPUT_SIZE)
 */
 __declspec(dllimport) int LZ4_compressBound(int isize);
 
 
 /*
 LZ4_compress_limitedOutput() :
-    Compress 'inputSize' bytes from 'source' into an output buffer 'dest' of maximum size 'maxOutputSize'.
-    If it cannot achieve it, compression will stop, and result of the function will be zero.
-    This function never writes outside of provided output buffer.
+	Compress 'inputSize' bytes from 'source' into an output buffer 'dest' of maximum size 'maxOutputSize'.
+	If it cannot achieve it, compression will stop, and result of the function will be zero.
+	This function never writes outside of provided output buffer.
 
-    inputSize  : Max supported value is LZ4_MAX_INPUT_VALUE
-    maxOutputSize : is the size of the destination buffer (which must be already allocated)
-    return : the number of bytes written in buffer 'dest'
-             or 0 if the compression fails
+	inputSize  : Max supported value is LZ4_MAX_INPUT_VALUE
+	maxOutputSize : is the size of the destination buffer (which must be already allocated)
+	return : the number of bytes written in buffer 'dest'
+			 or 0 if the compression fails
 */
 __declspec(dllimport) int LZ4_compress_limitedOutput(const char* source, char* dest, int inputSize, int maxOutputSize);
 
 
 /*
 LZ4_decompress_fast() :
-    originalSize : is the original and therefore uncompressed size
-    return : the number of bytes read from the source buffer (in other words, the compressed size)
-             If the source stream is malformed, the function will stop decoding and return a negative result.
-    note : This function is a bit faster than LZ4_decompress_safe()
-           This function never writes outside of output buffers, but may read beyond input buffer in case of malicious data packet.
-           Use this function preferably into a trusted environment (data to decode comes from a trusted source).
-           Destination buffer must be already allocated. Its size must be a minimum of 'outputSize' bytes.
+	originalSize : is the original and therefore uncompressed size
+	return : the number of bytes read from the source buffer (in other words, the compressed size)
+			 If the source stream is malformed, the function will stop decoding and return a negative result.
+	note : This function is a bit faster than LZ4_decompress_safe()
+		   This function never writes outside of output buffers, but may read beyond input buffer in case of malicious data packet.
+		   Use this function preferably into a trusted environment (data to decode comes from a trusted source).
+		   Destination buffer must be already allocated. Its size must be a minimum of 'outputSize' bytes.
 */
 __declspec(dllimport) int LZ4_decompress_fast(const char* source, char* dest, int originalSize);
 
 
 /*
 LZ4_decompress_safe_partial() :
-    This function decompress a compressed block of size 'inputSize' at position 'source'
-    into output buffer 'dest' of size 'maxOutputSize'.
-    The function tries to stop decompressing operation as soon as 'targetOutputSize' has been reached,
-    reducing decompression time.
-    return : the number of bytes decoded in the destination buffer (necessarily <= maxOutputSize)
-       Note : this number can be < 'targetOutputSize' should the compressed block to decode be smaller.
-             Always control how many bytes were decoded.
-             If the source stream is detected malformed, the function will stop decoding and return a negative result.
-             This function never writes outside of output buffer, and never reads outside of input buffer. It is therefore protected against malicious data packets
+	This function decompress a compressed block of size 'inputSize' at position 'source'
+	into output buffer 'dest' of size 'maxOutputSize'.
+	The function tries to stop decompressing operation as soon as 'targetOutputSize' has been reached,
+	reducing decompression time.
+	return : the number of bytes decoded in the destination buffer (necessarily <= maxOutputSize)
+	   Note : this number can be < 'targetOutputSize' should the compressed block to decode be smaller.
+			 Always control how many bytes were decoded.
+			 If the source stream is detected malformed, the function will stop decoding and return a negative result.
+			 This function never writes outside of output buffer, and never reads outside of input buffer. It is therefore protected against malicious data packets
 */
 __declspec(dllimport) int LZ4_decompress_safe_partial(const char* source, char* dest, int inputSize, int targetOutputSize, int maxOutputSize);
 
@@ -228,9 +228,9 @@ __declspec(dllimport) int LZ4_decompress_fast_withPrefix64k(const char* source, 
 
 /*
 *_withPrefix64k() :
-    These decoding functions work the same as their "normal name" versions,
-    but can use up to 64KB of data in front of 'char* dest'.
-    These functions are necessary to decode inter-dependant blocks.
+	These decoding functions work the same as their "normal name" versions,
+	but can use up to 64KB of data in front of 'char* dest'.
+	These functions are necessary to decode inter-dependant blocks.
 */
 
 

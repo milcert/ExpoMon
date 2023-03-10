@@ -52,8 +52,8 @@
 
 #if 0
 
-	#include <QMediaPlayer>
-	#include <QSound>
+    #include <QMediaPlayer>
+    #include <QSound>
 
 #endif
 
@@ -65,8 +65,8 @@
 
 /***************************************************************************/
 
-#define Menu_Type_Root		    (QTreeWidgetItem::UserType + 0)
-#define Menu_Type_Regs		    (QTreeWidgetItem::UserType + 1)
+#define Menu_Type_Root          (QTreeWidgetItem::UserType + 0)
+#define Menu_Type_Regs          (QTreeWidgetItem::UserType + 1)
 #define Menu_Type_Callstack     (QTreeWidgetItem::UserType + 2)
 
 /***************************************************************************/
@@ -103,14 +103,14 @@ public:
 
 class QtExpoMon : public QMainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	QtExpoMon(QWidget *parent = Q_NULLPTR);
-	~QtExpoMon();
+    QtExpoMon(QWidget *parent = Q_NULLPTR);
+    ~QtExpoMon();
 
 public:
-	void LogMessage(QString msg);
+    void LogMessage(QString msg);
 
 private:
     QAction* CreateCustomAction(const QString& Text, 
@@ -120,18 +120,18 @@ private:
 
 private slots:
     void on_BtnDisEnableMonitor_clicked();
-	void on_BtnStartStop_clicked();
+    void on_BtnStartStop_clicked();
     void on_BtnReset_clicked();
     void on_BtnAccessFilter_clicked();
     void on_BtnHijackFilter_clicked();
-	void on_CbBreak_toggled();
+    void on_CbBreak_toggled();
     void on_CbMonitorCond_toggled();
     void on_CbHijack_toggled();
     void on_CbBreakHijack_toggled();
     void on_ClickContextMenuItem(QAction* Action);
-	void on_CustomContextMenuRequested(const QPoint &Pos);
-	void on_LstLog_customContextMenuRequested(const QPoint &Pos);
-	void on_CopyLogToClipboard();
+    void on_CustomContextMenuRequested(const QPoint &Pos);
+    void on_LstLog_customContextMenuRequested(const QPoint &Pos);
+    void on_CopyLogToClipboard();
 
 private:
     /* Menus for TreeWidget Exports Access and TreeWidget Exports Hijacked */
@@ -140,20 +140,20 @@ private:
         QMenu RootExpAccess;
         QMenu RootExpHijack;
         QMenu Regs;
-	    QMenu Callstack;
+        QMenu Callstack;
     } Menus;
-	
+    
     /* Menu for the log ListWidget */
-	QMenu MenuLog;
+    QMenu MenuLog;
 
 protected:
     void showEvent(QShowEvent* Event) override;
 
 public:
-	Ui::ExpoMonClass ui;
+    Ui::ExpoMonClass ui;
 
-	/* Log */
-	QVector<QSharedPointer<QShortcut>> LogShortcuts;
+    /* Log */
+    QVector<QSharedPointer<QShortcut>> LogShortcuts;
 };
 
 /***************************************************************************/

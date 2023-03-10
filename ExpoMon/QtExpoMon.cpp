@@ -37,28 +37,28 @@ QtExpoMon::QtExpoMon(QWidget *parent) : QMainWindow(parent)
 {
     std::function<void(QTreeWidget*)> ActionFunc;
 
-	ui.setupUi(this);
+    ui.setupUi(this);
 
-	ui.LstLog->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    ui.LstLog->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-	ui.TreeExpAccessed->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui.TreeExpAccessed->setContextMenuPolicy(Qt::CustomContextMenu);
     ui.TreeExpAccessed->setFont(QFont("Consolas", 10));
 
     ui.TreeExpHijacked->setContextMenuPolicy(Qt::CustomContextMenu);
     ui.TreeExpHijacked->setFont(QFont("Consolas", 10));
 
-	/* Could also use QKeySequence("Ctrl+C") */
-	LogShortcuts.push_back(QSharedPointer<QShortcut>(
-		new QShortcut(QKeySequence::Copy, ui.LstLog)));
+    /* Could also use QKeySequence("Ctrl+C") */
+    LogShortcuts.push_back(QSharedPointer<QShortcut>(
+        new QShortcut(QKeySequence::Copy, ui.LstLog)));
 
     connect(LogShortcuts[0].data(), SIGNAL(activated()), 
-		this, SLOT(on_CopyLogToClipboard()));
+        this, SLOT(on_CopyLogToClipboard()));
 
     connect(ui.EditAccessFilter, SIGNAL(returnPressed()), 
-		this, SLOT(on_BtnAccessFilter_clicked()));
+        this, SLOT(on_BtnAccessFilter_clicked()));
 
     connect(ui.EditHijackFilter, SIGNAL(returnPressed()), 
-		this, SLOT(on_BtnHijackFilter_clicked()));
+        this, SLOT(on_BtnHijackFilter_clicked()));
 
     connect(&Menus.RootExpAccess, SIGNAL(triggered(QAction*)), 
         this, SLOT(on_ClickContextMenuItem(QAction*)));
@@ -69,158 +69,158 @@ QtExpoMon::QtExpoMon(QWidget *parent) : QMainWindow(parent)
     connect(&Menus.Callstack, SIGNAL(triggered(QAction*)), 
         this, SLOT(on_ClickContextMenuItem(QAction*)));
 
-	/* 
-		Not needed if QMetaObject::connectSlotsByName() is called 
-			-> multiple signal connects = multiple calls on events! 
-	*/
-	connect(ui.TreeExpAccessed, SIGNAL(customContextMenuRequested(QPoint)),
-		this, SLOT(on_CustomContextMenuRequested(QPoint)));
+    /* 
+        Not needed if QMetaObject::connectSlotsByName() is called 
+            -> multiple signal connects = multiple calls on events! 
+    */
+    connect(ui.TreeExpAccessed, SIGNAL(customContextMenuRequested(QPoint)),
+        this, SLOT(on_CustomContextMenuRequested(QPoint)));
 
     connect(ui.TreeExpHijacked, SIGNAL(customContextMenuRequested(QPoint)),
-		this, SLOT(on_CustomContextMenuRequested(QPoint)));
+        this, SLOT(on_CustomContextMenuRequested(QPoint)));
 
-	/* Display the version */
-	LogMessage(QString("%1 (%2) %3")
-		.arg(ExpoMon_PLUGIN_NAME_LONG)
-		.arg(ExpoMon_PLUGIN_NAME_SHORT)
-		.arg(ExpoMon_VERSION_STR));
+    /* Display the version */
+    LogMessage(QString("%1 (%2) %3")
+        .arg(ExpoMon_PLUGIN_NAME_LONG)
+        .arg(ExpoMon_PLUGIN_NAME_SHORT)
+        .arg(ExpoMon_VERSION_STR));
 
-	ExpoMon::IsEnabled = FALSE;
-	ExpoMon::IsStarted = FALSE;
+    ExpoMon::IsEnabled = FALSE;
+    ExpoMon::IsStarted = FALSE;
 
-	ui.BtnDisEnableMonitor->setEnabled(false);
+    ui.BtnDisEnableMonitor->setEnabled(false);
 
-	/* Setup the Accessed Exports TableWidgets */
-	ui.TreeExpAccessed->setSortingEnabled(true);
-	ui.TreeExpAccessed->setColumnCount(7);
+    /* Setup the Accessed Exports TableWidgets */
+    ui.TreeExpAccessed->setSortingEnabled(true);
+    ui.TreeExpAccessed->setColumnCount(7);
 
-	ui.TreeExpAccessed->setHeaderLabels({ "", "Function Name", "Module Name", 
-		"From Address", "From Module", "Thread Id", "Access Operation"});
+    ui.TreeExpAccessed->setHeaderLabels({ "", "Function Name", "Module Name", 
+        "From Address", "From Module", "Thread Id", "Access Operation"});
 
 #if 0
 
-	/* Note: this prevents interactive resizing */
-	for (int i = 0; i < ui.TreeExpAccessed->columnCount(); i++)
-		ui.TreeExpAccessed->header()->setSectionResizeMode(i, QHeaderView::ResizeToContents);
+    /* Note: this prevents interactive resizing */
+    for (int i = 0; i < ui.TreeExpAccessed->columnCount(); i++)
+        ui.TreeExpAccessed->header()->setSectionResizeMode(i, QHeaderView::ResizeToContents);
 
 #endif
 
     /* Setup the Hijacked Exports TableWidgets */
-	ui.TreeExpHijacked->setSortingEnabled(true);
-	ui.TreeExpHijacked->setColumnCount(7);
+    ui.TreeExpHijacked->setSortingEnabled(true);
+    ui.TreeExpHijacked->setColumnCount(7);
 
-	ui.TreeExpHijacked->setHeaderLabels({ "", "Function Name", "Module Name", 
-		"Return Address", "Return Module", "Thread Id", "Access Operation"});
+    ui.TreeExpHijacked->setHeaderLabels({ "", "Function Name", "Module Name", 
+        "Return Address", "Return Module", "Thread Id", "Access Operation"});
 
-	/* Setup the menu that is invoked on right-clicking on a root item */
+    /* Setup the menu that is invoked on right-clicking on a root item */
     Menus.RootExpAccess.addAction(CreateCustomAction(QString("Follow in Disassembler"), 
         [this](QTreeWidget* TreeWidget) { 
-		    auto Item = TreeWidget->currentItem();
-		    if (Item != nullptr)
-		    {
-			    std::string Address = Item->text(3).toStdString();
-			    DbgCmdExec(Utils::StringFormat(
-				    "disasm %s", Address.c_str()).c_str());
-		    }
+            auto Item = TreeWidget->currentItem();
+            if (Item != nullptr)
+            {
+                std::string Address = Item->text(3).toStdString();
+                DbgCmdExec(Utils::StringFormat(
+                    "disasm %s", Address.c_str()).c_str());
+            }
     }));
 
-	Menus.RootExpAccess.addAction(CreateCustomAction(QString("Follow in Memory Map"), 
+    Menus.RootExpAccess.addAction(CreateCustomAction(QString("Follow in Memory Map"), 
         [this](QTreeWidget* TreeWidget) {  
-		    auto Item = TreeWidget->currentItem();
-		    if (Item != nullptr)
-		    {
-			    std::string Address = Item->text(3).toStdString();
-			    DbgCmdExec(Utils::StringFormat(
-				    "memmapdump %s", Address.c_str()).c_str());
-		    }
-	}));
+            auto Item = TreeWidget->currentItem();
+            if (Item != nullptr)
+            {
+                std::string Address = Item->text(3).toStdString();
+                DbgCmdExec(Utils::StringFormat(
+                    "memmapdump %s", Address.c_str()).c_str());
+            }
+    }));
 
-	Menus.RootExpAccess.addSeparator();
+    Menus.RootExpAccess.addSeparator();
 
-	Menus.RootExpAccess.addAction(CreateCustomAction(QString("Copy <Function Name>"), 
+    Menus.RootExpAccess.addAction(CreateCustomAction(QString("Copy <Function Name>"), 
         [this](QTreeWidget* TreeWidget) {  
-		    auto Item = TreeWidget->currentItem();
-		    if (Item != nullptr)
-			    QApplication::clipboard()->setText(Item->text(1));
-	}));
+            auto Item = TreeWidget->currentItem();
+            if (Item != nullptr)
+                QApplication::clipboard()->setText(Item->text(1));
+    }));
 
-	Menus.RootExpAccess.addAction(CreateCustomAction(QString("Copy <Module Name>"), 
+    Menus.RootExpAccess.addAction(CreateCustomAction(QString("Copy <Module Name>"), 
         [this](QTreeWidget* TreeWidget) {  
-		    auto Item = TreeWidget->currentItem();
-		    if (Item != nullptr)
-			    QApplication::clipboard()->setText(Item->text(2));
-	}));
+            auto Item = TreeWidget->currentItem();
+            if (Item != nullptr)
+                QApplication::clipboard()->setText(Item->text(2));
+    }));
 
     ActionFunc = [this](QTreeWidget* TreeWidget) {   
-		auto Item = TreeWidget->currentItem();
-		if (Item != nullptr)
-			QApplication::clipboard()->setText(Item->text(3));
+        auto Item = TreeWidget->currentItem();
+        if (Item != nullptr)
+            QApplication::clipboard()->setText(Item->text(3));
     };
 
-	Menus.RootExpAccess.addAction(CreateCustomAction(QString("Copy <From Address>"), ActionFunc));
+    Menus.RootExpAccess.addAction(CreateCustomAction(QString("Copy <From Address>"), ActionFunc));
     Menus.RootExpHijack.addAction(CreateCustomAction(QString("Copy <Return Address>"), ActionFunc));
 
     ActionFunc = [this](QTreeWidget* TreeWidget) {   
-		auto Item = TreeWidget->currentItem();
-		if (Item != nullptr)
-			QApplication::clipboard()->setText(Item->text(4));
+        auto Item = TreeWidget->currentItem();
+        if (Item != nullptr)
+            QApplication::clipboard()->setText(Item->text(4));
     };
 
-	Menus.RootExpAccess.addAction(CreateCustomAction(QString("Copy <From Module>"), ActionFunc));
+    Menus.RootExpAccess.addAction(CreateCustomAction(QString("Copy <From Module>"), ActionFunc));
     Menus.RootExpHijack.addAction(CreateCustomAction(QString("Copy <Return Module>"), ActionFunc));
 
-	Menus.RootExpAccess.addAction(CreateCustomAction(QString("Copy <Thread Id>"), 
+    Menus.RootExpAccess.addAction(CreateCustomAction(QString("Copy <Thread Id>"), 
         [this](QTreeWidget* TreeWidget) {   
-		    auto Item = TreeWidget->currentItem();
-		    if (Item != nullptr)
-			    QApplication::clipboard()->setText(Item->text(5));
-	}));
+            auto Item = TreeWidget->currentItem();
+            if (Item != nullptr)
+                QApplication::clipboard()->setText(Item->text(5));
+    }));
 
-	Menus.RootExpAccess.addSeparator();
+    Menus.RootExpAccess.addSeparator();
 
-	Menus.RootExpAccess.addAction(CreateCustomAction(QString("Collapse All"), 
+    Menus.RootExpAccess.addAction(CreateCustomAction(QString("Collapse All"), 
         [this](QTreeWidget* TreeWidget) {   
-		    TreeWidget->collapseAll(); 
-	}));
+            TreeWidget->collapseAll(); 
+    }));
 
-	Menus.RootExpAccess.addAction(CreateCustomAction(QString("Expand All"), 
+    Menus.RootExpAccess.addAction(CreateCustomAction(QString("Expand All"), 
         [this](QTreeWidget* TreeWidget) {   
-		    TreeWidget->expandAll(); 
-	}));
+            TreeWidget->expandAll(); 
+    }));
 
-	Menus.RootExpAccess.addAction(CreateCustomAction(QString("Clear"), 
+    Menus.RootExpAccess.addAction(CreateCustomAction(QString("Clear"), 
         [this](QTreeWidget* TreeWidget) {  
-		    TreeWidget->clear(); 
-	}));
+            TreeWidget->clear(); 
+    }));
 
-	/* Setup the menu that is invoked on right-clicking on a register child item */
-	Menus.Regs.addAction(CreateCustomAction(QString("Copy"), [this](QTreeWidget* TreeWidget) {   
-		auto Item = TreeWidget->currentItem();
-		if (Item != nullptr)
-			QApplication::clipboard()->setText(Item->text(1));
-	}));
+    /* Setup the menu that is invoked on right-clicking on a register child item */
+    Menus.Regs.addAction(CreateCustomAction(QString("Copy"), [this](QTreeWidget* TreeWidget) {   
+        auto Item = TreeWidget->currentItem();
+        if (Item != nullptr)
+            QApplication::clipboard()->setText(Item->text(1));
+    }));
 
-	/* Setup the menu that is invoked on right-clicking on a callstack child item */
-	Menus.Callstack.addAction(CreateCustomAction(QString("Follow in Disassembler"), 
+    /* Setup the menu that is invoked on right-clicking on a callstack child item */
+    Menus.Callstack.addAction(CreateCustomAction(QString("Follow in Disassembler"), 
         [this](QTreeWidget* TreeWidget) {   
-		    auto Item = TreeWidget->currentItem();
-		    if (Item != nullptr)
-		    {
-			    std::string Address = ExpoMon::GetStringAfterChr(
-				    Item->text(1).toStdString(), ".");
+            auto Item = TreeWidget->currentItem();
+            if (Item != nullptr)
+            {
+                std::string Address = ExpoMon::GetStringAfterChr(
+                    Item->text(1).toStdString(), ".");
 
-			    DbgCmdExec(Utils::StringFormat(
-				    "disasm %s", Address.c_str()).c_str());
-		    }
-	}));
+                DbgCmdExec(Utils::StringFormat(
+                    "disasm %s", Address.c_str()).c_str());
+            }
+    }));
 
-	Menus.Callstack.addAction(CreateCustomAction(QString("Add <Function Name> to comment at address"), 
+    Menus.Callstack.addAction(CreateCustomAction(QString("Add <Function Name> to comment at address"), 
         [this](QTreeWidget* TreeWidget) {  
-		    auto Item = TreeWidget->currentItem();
+            auto Item = TreeWidget->currentItem();
             if (Item != nullptr &&
                 Item->parent() != nullptr && 
                 Item->parent()->parent() != nullptr)
-		    {
+            {
                 bool ValidEval = false;
 
                 duint Address = DbgEval(ExpoMon::GetStringAfterChr(
@@ -251,14 +251,14 @@ QtExpoMon::QtExpoMon(QWidget *parent) : QMainWindow(parent)
                         DbgSetCommentAt(Address, Buffer);
                     }
                 }
-		    }
-	}));
+            }
+    }));
 
     Menus.Callstack.addAction(CreateCustomAction(QString("Reset comment at address"), 
         [this](QTreeWidget* TreeWidget) {   
-		    auto Item = TreeWidget->currentItem();
+            auto Item = TreeWidget->currentItem();
             if (Item != nullptr)
-		    {
+            {
                 bool ValidEval = false;
 
                 duint Address = DbgEval(ExpoMon::GetStringAfterChr(
@@ -268,24 +268,24 @@ QtExpoMon::QtExpoMon(QWidget *parent) : QMainWindow(parent)
                 {
                     DbgSetCommentAt(Address, "");
                 }
-		    }
-	}));
+            }
+    }));
 
-	Menus.Callstack.addAction(CreateCustomAction(QString("Copy"), 
+    Menus.Callstack.addAction(CreateCustomAction(QString("Copy"), 
         [this](QTreeWidget* TreeWidget) {   
-		    auto Item = TreeWidget->currentItem();
-		    if (Item != nullptr)
-			    QApplication::clipboard()->setText(Item->text(1));
-	}));
+            auto Item = TreeWidget->currentItem();
+            if (Item != nullptr)
+                QApplication::clipboard()->setText(Item->text(1));
+    }));
 
-	/* Setup the menu for the Log list */
-	MenuLog.addAction(QString("Copy"), this, [this]() {  
-		on_CopyLogToClipboard();
-	});
+    /* Setup the menu for the Log list */
+    MenuLog.addAction(QString("Copy"), this, [this]() {  
+        on_CopyLogToClipboard();
+    });
 
-	MenuLog.addAction(QString("Clear"), this, [this]() {  
-		ui.LstLog->clear(); 
-	});
+    MenuLog.addAction(QString("Clear"), this, [this]() {  
+        ui.LstLog->clear(); 
+    });
 }
 
 QtExpoMon::~QtExpoMon()
@@ -309,8 +309,8 @@ void QtExpoMon::showEvent(QShowEvent* Event)
         for (auto& TreeWidget : TreeWidgets)
         {
             TreeWidget->header()->resizeSection(0, Width * 10/100);
-	        TreeWidget->header()->resizeSection(1, Width * 20/100);
-	        TreeWidget->header()->resizeSection(2, Width * 20/100);
+            TreeWidget->header()->resizeSection(1, Width * 20/100);
+            TreeWidget->header()->resizeSection(2, Width * 20/100);
             TreeWidget->header()->resizeSection(3, Width * 15/100);
             TreeWidget->header()->resizeSection(4, Width * 15/100);
         }
@@ -333,17 +333,17 @@ QAction* QtExpoMon::CreateCustomAction(const QString& Text, const std::function<
 
 void QtExpoMon::on_BtnStartStop_clicked()
 {
-	if (!ExpoMon::IsDebugging())
-	{
-		QMessageBox::critical(this, "Error", "Not debugging anything!");
-		return;
-	}
+    if (!ExpoMon::IsDebugging())
+    {
+        QMessageBox::critical(this, "Error", "Not debugging anything!");
+        return;
+    }
 
-	if (ExpoMon::IsRunning() && !ExpoMon::IsStarted)
-	{
-		QMessageBox::critical(this, "Error", "The debugger must be in a paused state!");
-		return;
-	}
+    if (ExpoMon::IsRunning() && !ExpoMon::IsStarted)
+    {
+        QMessageBox::critical(this, "Error", "The debugger must be in a paused state!");
+        return;
+    }
 
     /* Do not allow any stopping/freeing: the program might still have the addresses in memory and 
         might use them at some point, causing unhandled exceptions if the data has been freed 
@@ -351,21 +351,21 @@ void QtExpoMon::on_BtnStartStop_clicked()
         ui.BtnStartStop->setEnabled(false);
     */
 
-	ExpoMon::Start();
+    ExpoMon::Start();
 }
 
 void QtExpoMon::on_BtnDisEnableMonitor_clicked()
 {
-	if (ui.BtnDisEnableMonitor->text().contains("Disable"))
-	{
-		ExpoMon::MemBreakpointsDisable();
-		ui.BtnDisEnableMonitor->setText("Enable Monitoring");
-	}
-	else
-	{
-		ExpoMon::MemBreakpointsEnable();
-		ui.BtnDisEnableMonitor->setText("Disable Monitoring");
-	}
+    if (ui.BtnDisEnableMonitor->text().contains("Disable"))
+    {
+        ExpoMon::MemBreakpointsDisable();
+        ui.BtnDisEnableMonitor->setText("Enable Monitoring");
+    }
+    else
+    {
+        ExpoMon::MemBreakpointsEnable();
+        ui.BtnDisEnableMonitor->setText("Disable Monitoring");
+    }
 }
 
 void QtExpoMon::on_BtnReset_clicked()
@@ -377,15 +377,15 @@ void QtExpoMon::on_BtnReset_clicked()
     if (Reply == QMessageBox::Yes)
     {
         ExpoMon::Stop();
-	    ExpoMon::IsInitialized = FALSE;
+        ExpoMon::IsInitialized = FALSE;
     }
 }
 
 void QtExpoMon::on_CbBreak_toggled()
 {
-	if (ui.CbBreak->isChecked())
-	{
-		ui.EditBreak->setEnabled(false);
+    if (ui.CbBreak->isChecked())
+    {
+        ui.EditBreak->setEnabled(false);
         ui.EditBreakOnModule->setEnabled(false);
         ui.EditBreakOnFunction->setEnabled(false);
 
@@ -394,122 +394,122 @@ void QtExpoMon::on_CbBreak_toggled()
             ui.EditBreakOnModule->toPlainText().toStdString(),
             ui.EditBreakOnFunction->toPlainText().toStdString());
 
-		ExpoMon::SetBreakCondition(ui.EditBreak->toPlainText().toStdString());
+        ExpoMon::SetBreakCondition(ui.EditBreak->toPlainText().toStdString());
         ExpoMon::DoBreakOnAccess = true;
-	}
-	else
-	{
+    }
+    else
+    {
         ExpoMon::DoBreakOnAccess = false;
         ExpoMon::SetBreakCondition("0");
 
-		ui.EditBreak->setEnabled(true);
+        ui.EditBreak->setEnabled(true);
         ui.EditBreakOnModule->setEnabled(true);
         ui.EditBreakOnFunction->setEnabled(true);
-	}
+    }
 }
 
 void QtExpoMon::on_CbHijack_toggled()
 {
-	if (ui.CbHijack->isChecked())
-	{
-		ui.EditHijack->setEnabled(false);
+    if (ui.CbHijack->isChecked())
+    {
+        ui.EditHijack->setEnabled(false);
         ui.EditHijackOnModule->setEnabled(false);
         ui.EditHijackOnFunction->setEnabled(false);
         
-		/* Hijack exported function for the given conditions */
-		ExpoMon::SetHijackConditions(
+        /* Hijack exported function for the given conditions */
+        ExpoMon::SetHijackConditions(
             ui.EditHijack->toPlainText().toStdString(),
             ui.EditHijackOnModule->toPlainText().toStdString(),
             ui.EditHijackOnFunction->toPlainText().toStdString());
 
         ExpoMon::DoHijackOnConditions = true;
-	}
-	else
-	{
+    }
+    else
+    {
         ExpoMon::DoHijackOnConditions = false;
         ExpoMon::SetHijackConditions("0", "", "");
 
-		ui.EditHijack->setEnabled(true);
+        ui.EditHijack->setEnabled(true);
         ui.EditHijackOnModule->setEnabled(true);
         ui.EditHijackOnFunction->setEnabled(true);
-	}
+    }
 }
 
 void QtExpoMon::on_CbBreakHijack_toggled()
 {
     if (ui.CbBreakHijack->isChecked())
-	{
-		ui.EditBreakHijack->setEnabled(false);
+    {
+        ui.EditBreakHijack->setEnabled(false);
         ui.EditBreakHijackOnModule->setEnabled(false);
         ui.EditBreakHijackOnFunction->setEnabled(false);
         
-		/* Hijack exported function for the given conditions */
-		ExpoMon::SetBreakOnHijackCalledConditions(
+        /* Hijack exported function for the given conditions */
+        ExpoMon::SetBreakOnHijackCalledConditions(
             ui.EditBreakHijack->toPlainText().toStdString(),
             ui.EditBreakHijackOnModule->toPlainText().toStdString(),
             ui.EditBreakHijackOnFunction->toPlainText().toStdString());
 
         ExpoMon::DoBreakOnCalledHijack = true;
-	}
-	else
-	{
+    }
+    else
+    {
         ExpoMon::DoBreakOnCalledHijack = false;
         ExpoMon::SetBreakOnHijackCalledConditions("0", "", "");
 
-		ui.EditBreakHijack->setEnabled(true);
+        ui.EditBreakHijack->setEnabled(true);
         ui.EditBreakHijackOnModule->setEnabled(true);
         ui.EditBreakHijackOnFunction->setEnabled(true);
-	}
+    }
 }
 
 void QtExpoMon::on_CbMonitorCond_toggled()
 {
-	if (ui.CbMonitorCond->isChecked())
-	{
-		ui.EditMonitorModules->setEnabled(false);
+    if (ui.CbMonitorCond->isChecked())
+    {
+        ui.EditMonitorModules->setEnabled(false);
         
-		/* Set monitored modules */
-		ExpoMon::SetMonitoredModules(
+        /* Set monitored modules */
+        ExpoMon::SetMonitoredModules(
             ui.EditMonitorModules->toPlainText().toStdString());
-	}
-	else
-	{
-		ui.EditMonitorModules->setEnabled(true);
+    }
+    else
+    {
+        ui.EditMonitorModules->setEnabled(true);
 
-		/* Monitor all the modules */
-		ExpoMon::SetMonitoredModules("");
-	}
+        /* Monitor all the modules */
+        ExpoMon::SetMonitoredModules("");
+    }
 }
 
 void QtExpoMon::on_CustomContextMenuRequested(const QPoint &Pos)
 {
     QMenu* Menu = nullptr;
     QTreeWidget* TreeWidget = reinterpret_cast<QTreeWidget*>(sender());
-	QTreeWidgetItem* Item = TreeWidget->itemAt(Pos);
+    QTreeWidgetItem* Item = TreeWidget->itemAt(Pos);
 
     /* Translate the widget coordinate pos to global screen coordinates */
     QPoint ScreenPos = TreeWidget->viewport()->mapToGlobal(Pos);
 
-	if (Item == nullptr)
-		return;
+    if (Item == nullptr)
+        return;
 
-	switch (Item->type())
-	{
-		case Menu_Type_Root:
+    switch (Item->type())
+    {
+        case Menu_Type_Root:
             Menu = &Menus.RootExpAccess;
-			break;
+            break;
 
-		case Menu_Type_Regs:
-			Menu = &Menus.Regs;
-			break;
+        case Menu_Type_Regs:
+            Menu = &Menus.Regs;
+            break;
 
-		case Menu_Type_Callstack:
-			Menu = &Menus.Callstack;
-			break;
+        case Menu_Type_Callstack:
+            Menu = &Menus.Callstack;
+            break;
 
-		default:
-			break;
-	}
+        default:
+            break;
+    }
 
     if (Menu != nullptr)
     {
@@ -520,30 +520,30 @@ void QtExpoMon::on_CustomContextMenuRequested(const QPoint &Pos)
 
 void QtExpoMon::on_LstLog_customContextMenuRequested(const QPoint &Pos)
 {
-	MenuLog.exec(ui.LstLog->viewport()->mapToGlobal(Pos));
+    MenuLog.exec(ui.LstLog->viewport()->mapToGlobal(Pos));
 }
 
 void QtExpoMon::LogMessage(QString msg)
 {
-	ui.LstLog->addItem(new QListWidgetItem(QString("[%1] %2")
-		.arg(QDateTime::currentDateTime().toString("HH:mm:ss.zzz"))
-		.arg(msg)));
+    ui.LstLog->addItem(new QListWidgetItem(QString("[%1] %2")
+        .arg(QDateTime::currentDateTime().toString("HH:mm:ss.zzz"))
+        .arg(msg)));
 }
 
 void QtExpoMon::on_CopyLogToClipboard()
 {
-	QStringList StringList;
+    QStringList StringList;
 
-	auto Items = ui.LstLog->selectedItems();
+    auto Items = ui.LstLog->selectedItems();
 
-	if (Items.count() < 1)
-		return;
+    if (Items.count() < 1)
+        return;
 
-	for (int i = 0; i < Items.count(); i++)
-		StringList.append(Items.value(i)->text());
+    for (int i = 0; i < Items.count(); i++)
+        StringList.append(Items.value(i)->text());
 
-	/* Join the list elements and copy the output to the clipboard */
-	QApplication::clipboard()->setText(StringList.join("\r\n"));
+    /* Join the list elements and copy the output to the clipboard */
+    QApplication::clipboard()->setText(StringList.join("\r\n"));
 }
 
 void QtExpoMon::on_ClickContextMenuItem(QAction* Action)

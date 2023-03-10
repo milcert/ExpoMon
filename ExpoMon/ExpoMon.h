@@ -58,11 +58,11 @@
 /***************************************************************************/
 
 #ifndef DLL_EXPORT
-	#define DLL_EXPORT __declspec(dllexport)
+    #define DLL_EXPORT __declspec(dllexport)
 #endif
 
 #ifndef EXTERN_C
-	#define EXTERN_C extern "C"
+    #define EXTERN_C extern "C"
 #endif
 
 #include "PluginSdk/bridgemain.h"
@@ -90,74 +90,74 @@
 /***************************************************************************/
 
 #ifdef _WIN64
-	#pragma comment(lib, ".\\PluginSdk\\x64dbg.lib")
-	#pragma comment(lib, ".\\PluginSdk\\x64bridge.lib")
-	#pragma comment(lib, ".\\PluginSdk\\TitanEngine\\TitanEngine_x64.lib")
+    #pragma comment(lib, ".\\PluginSdk\\x64dbg.lib")
+    #pragma comment(lib, ".\\PluginSdk\\x64bridge.lib")
+    #pragma comment(lib, ".\\PluginSdk\\TitanEngine\\TitanEngine_x64.lib")
 #else
-	#pragma comment(lib, ".\\PluginSdk\\x32dbg.lib")
-	#pragma comment(lib, ".\\PluginSdk\\x32bridge.lib")
-	#pragma comment(lib, ".\\PluginSdk\\TitanEngine\\TitanEngine_x86.lib")
+    #pragma comment(lib, ".\\PluginSdk\\x32dbg.lib")
+    #pragma comment(lib, ".\\PluginSdk\\x32bridge.lib")
+    #pragma comment(lib, ".\\PluginSdk\\TitanEngine\\TitanEngine_x86.lib")
 #endif
 
 /***************************************************************************/
 
 namespace ExpoMon
 {
-	/* Struct that contains several GUI handles (filled by plugsetup) */
-	extern PLUG_SETUPSTRUCT Setup;
+    /* Struct that contains several GUI handles (filled by plugsetup) */
+    extern PLUG_SETUPSTRUCT Setup;
 
-	/* Plugin handle */
-	extern INT Handle;
+    /* Plugin handle */
+    extern INT Handle;
 
-	/* Plugin module handle */
-	extern HMODULE ModuleHandle;
+    /* Plugin module handle */
+    extern HMODULE ModuleHandle;
 
-	/* Main logic */
-	extern BOOL IsEnabled;
-	extern BOOL IsStarted;
-	extern BOOL IsInitialized;
+    /* Main logic */
+    extern BOOL IsEnabled;
+    extern BOOL IsStarted;
+    extern BOOL IsInitialized;
     extern BOOL DoBreakOnAccess;
     extern BOOL DoHijackOnConditions;
     extern BOOL DoBreakOnCalledHijack;
 
-	/* Qt functions */
-	VOID GuiShow();
-	VOID AboutShow();
+    /* Qt functions */
+    VOID GuiShow();
+    VOID AboutShow();
 
-	/* Callbacks */
-	VOID GuiInit();
-	VOID GuiDestroy();
+    /* Callbacks */
+    VOID GuiInit();
+    VOID GuiDestroy();
 
-	/* Wait functions */
-	VOID Wait_GuiInit();
-	VOID Wait_GuiDestroy();
+    /* Wait functions */
+    VOID Wait_GuiInit();
+    VOID Wait_GuiDestroy();
 
-	/* Utility functions */
+    /* Utility functions */
     BOOL DbgMemoryRead(PVOID BaseAddr, PVOID Dst, SIZE_T Size);
     BOOL DbgMemoryWrite(PVOID BaseAddr, PVOID Src, SIZE_T Size);
-	std::string GetStringAfterChr(std::string& Str, const char* Sep);
+    std::string GetStringAfterChr(std::string& Str, const char* Sep);
     std::string ReplaceChrInString(std::string& Str, const char* Chr, const char* Rep);
-	std::string GetBreakCondition();
+    std::string GetBreakCondition();
     bool ShouldMonitorModule(std::string Module);
     std::vector<std::string> Tokenize(std::string Input);
-	VOID SetBreakCondition(std::string Condition);
+    VOID SetBreakCondition(std::string Condition);
     VOID SetHijackConditions(std::string Condition, std::string Modules, std::string Functions);
     VOID SetBreakOnHijackCalledConditions(std::string Condition, std::string Modules, std::string Functions);
     VOID SetMonitoredModules(std::string Modules);
     VOID SetBreakOnAccess(std::string Modules, std::string Functions);
-	void MemBreakpointsDisable();
-	void MemBreakpointsEnable();
+    void MemBreakpointsDisable();
+    void MemBreakpointsEnable();
 
-	/* Main logic */
-	BOOL IsRunning();
-	BOOL IsDebugging();
-	BOOL Initialize();
-	BOOL Start();
-	VOID Stop();
-	VOID OnLoadDll(duint ModBase, std::string ModName);
-	VOID OnBreakpoint(BRIDGEBP* BpInfo);
-	VOID OnDebugEvent(DEBUG_EVENT* DbgEvent);
-	VOID OnPause();
+    /* Main logic */
+    BOOL IsRunning();
+    BOOL IsDebugging();
+    BOOL Initialize();
+    BOOL Start();
+    VOID Stop();
+    VOID OnLoadDll(duint ModBase, std::string ModName);
+    VOID OnBreakpoint(BRIDGEBP* BpInfo);
+    VOID OnDebugEvent(DEBUG_EVENT* DbgEvent);
+    VOID OnPause();
 }
 
 /***************************************************************************/
