@@ -4,7 +4,8 @@ ExpoMon is a plugin developed by milCERT.ch, the Swiss Military CERT, for [x64db
 
 ## Features
 
-- Logs context information on access to the address of an exported function
+- Logs context information on access to the RVA of an exported function
+	- `IMAGE_EXPORT_DIRECTORY.AddressOfFunctions[]`
 - Hijacks accessed exported functions
 
 ## Known limitations
