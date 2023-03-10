@@ -29,7 +29,7 @@ ExpoMon is a plugin developed by milCERT.ch, the Swiss Military CERT, for [x64db
 	
 - To enable the exports monitoring: `Monitor Exports`
 	- This will monitor the access to the exports of all the currently loaded modules
-		- In the `Settings` tab it is possible to configure to only monitor specific modules (separators: `,`, `;` and newline)
+		- In the `Settings` tab it is possible to configure to only monitor specific modules
 	- Modules that are loaded at a later stage are also automatically monitored (`CB_LOADDLL`)
 
 - To temporarily disable any monitoring: `Disable Monitoring`
